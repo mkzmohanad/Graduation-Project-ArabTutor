@@ -1,0 +1,8 @@
+node_modules/
+*.env
+config/secrets.yml
+.DS_Store  # macOS system files
+.idea/     # JetBrains IDE settings (WebStorm, IntelliJ, etc.)
+.vscode/   # VS Code workspace settings
+dist/      # Prevent built files from being committed
+coverage/  # Test coverage reports
