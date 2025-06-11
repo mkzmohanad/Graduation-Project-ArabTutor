@@ -2,7 +2,6 @@ import {BrowserRouter, Route, Routes } from "react-router-dom"
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
-import YoutubeVideosExplorer from "./Features/ExploringVideos/youtubeVideosExplorer";
 import DubbingVideo from "./Features/DubbingVideos/DubbingVideo";
 import LoginForm from "./Features/Auth/LoginForm";
 import SignupForm from "./Features/Auth/SignupForm";
@@ -16,7 +15,6 @@ import UploadVideo from "./Pages/UploadVideo";
 import ResetPasswordForm from "./Features/Auth/ResetPasswordForm";
 import ForgetPasswordEmailConfirmationForm from "./Features/Auth/ForgetPasswordEmailConfirmationForm";
 import VideosExplorer from "./Pages/VideosExplorer";
-import ShowDubbedVideo from "./Features/DubbingVideos/ShowDubbedVideo";
 
 const queryClient = new QueryClient({
   defaultOptions : {
