@@ -114,8 +114,9 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
 
 exports.forgetPassword = asyncHandler(async (req, res, next) => {
     const {email} = req.body;
-
+    
     const user = await User.findOne({email});
+    console.log(user)
 
     if(!user) return next(new errorHandler("There's no user with this email!" , 404))
 
@@ -125,9 +126,10 @@ exports.forgetPassword = asyncHandler(async (req, res, next) => {
     await user.save({ validateModifiedOnly: true })
 
     try{
-        const resetUrl = `${req.protocol}://${req.get("host")}/api/v1/users/forgetPassword/${resetToken}`;
+        // const resetUrl = `${process.env.FRONTEND_LOCALHOST}/resetPassword/${resetToken}`;
+        const resetUrl = `http://localhost:5173/resetPassword/${resetToken}`;
         await new Email(user , resetUrl).resetPassword()
-
+        console.log(resetUrl)
         res.status(200).json({
             status : "success",
             message : "Token is sent successfully",
@@ -145,7 +147,7 @@ exports.forgetPassword = asyncHandler(async (req, res, next) => {
 exports.resetPassword = asyncHandler(async (req, res, next) => {
     const {password , passwordConfirmation} = req.body;
 
-    const hashedResetToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+    const hashedResetToken = crypto.createHash("sha256").update(req.params.resetToken).digest("hex");
     const user = await User.findOne({passwordResetToken : hashedResetToken , passwordResetTokenExpiration : {$gt : Date.now()}});
     if(!user) return next(new errorHandler("Reset token is invalid or expired" , 400));
 

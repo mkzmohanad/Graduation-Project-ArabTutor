@@ -11,7 +11,7 @@ const { globalErrorHandler } = require('./Controllers/ErrorController');
 const app = express();
 
 const corsOptions = {
-    origin: "*", // Your frontend origin
+    origin: "http://localhost:5173", // Your frontend origin
     methods : ['GET', 'POST', 'PATCH' , 'DELETE'],
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
     // allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'], // Add allowed headers
@@ -23,28 +23,23 @@ app.use(cors(corsOptions))
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-// app.use((req, res, next) => {
-//     if (req.method === 'OPTIONS') {
-//         res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:8000');
-//         res.header('Access-Control-Allow-Credentials', 'true');
-//         res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-//         res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//         return res.status(204).send();
-//     }
-//     next();
-// });
+app.use((req, res, next) => {
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+        res.header('Access-Control-Allow-Credentials', 'true');
+        res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return res.status(204).send();
+    }
+    next();
+});
 
 app.use("/api/v1/users" , userRoutes);
 app.use("/api/v1/videos" , VideoRoutes);
-// app.get('/api/v1/users/', (req, res) => {
-//     res.json({ message: "Users fetched successfully", users: [] });
-// });
-
 
 // app.get('/', (req, res) => {
 //     res.json({ message: 'API is running successfully!' });
 // });
-
 
 // app.use((err, req, res, next) => {
 //     console.error('Unhandled Error:', err.message);
@@ -64,6 +59,5 @@ app.use((req, res, next) => {
 });
 
 app.use(globalErrorHandler)
-
 
 module.exports = app;

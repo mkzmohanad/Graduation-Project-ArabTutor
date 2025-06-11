@@ -8,9 +8,8 @@ const userRoutes = express.Router();
 
 userRoutes.route("/signup").post(signup);
 userRoutes.route("/login").post(login);
-
 userRoutes.route("/forgetPassword").post(forgetPassword);
-userRoutes.route("/resetPassword/:token").patch(resetPassword);
+userRoutes.route("/resetPassword/:resetToken").patch(resetPassword);
 
 userRoutes.use(protectRoutes);
 

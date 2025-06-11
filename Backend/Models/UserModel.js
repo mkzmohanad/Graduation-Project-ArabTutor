@@ -24,7 +24,7 @@ const userSchema = mongoose.Schema({
     },
     passwordConfirmation : {
         type : String,
-        required: [true , "passwordConfirmation is required and must be provided and matches the password."],
+        required: [true , "password confirmation is required and must be provided and matches the password."],
         validate: {
             validator : function(value) {
                 return value === this.password;
@@ -32,9 +32,6 @@ const userSchema = mongoose.Schema({
         }
     },
     favoriteVideos : {
-        type : [String]
-    },
-    history : {
         type : [String]
     },
     isActive : {
@@ -92,7 +89,6 @@ userSchema.methods.isChangedPassword = async function (tokenCreatedTime) {
 userSchema.methods.createPasswordResetToken = function() {
     const resetToken = crypto.randomBytes(32).toString("hex");
     this.passwordResetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
-    console.log(this.passwordResetToken)
 
     this.passwordResetTokenExpiration = Date.now() + 10 * 60 * 1000;
 

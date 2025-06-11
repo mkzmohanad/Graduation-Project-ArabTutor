@@ -11,20 +11,17 @@ const videoSchema = mongoose.Schema({
     },
     videoURL: {
         type : String,
-        required : true,
     },
     dubbedVideoURL: {
         type:String,
     },
-    videoStatus : {
-        type: String,
-        enum: ['pending', 'processing', 'completed', 'failed'],
-        default: 'pending'
+    videoSummarization : {
+        type : String,
     },
     createdAt: {
         type: Date,
         default: Date.now(),
-      },
+    },
 })
 
 const Video = mongoose.model("Video" , videoSchema)

@@ -37,10 +37,28 @@ exports.deleteMe = asyncHandler(async (req , res , next) => {
 exports.updateMe = asyncHandler(async (req, res , next) => {
     if(req.body.password || req.body.passwordConfirmation) return next(new errorHandler("you cant update your password here!!" , 403));
 
-    const user =await User.findOneAndUpdate({_id: req.user.id} , req.body , {
-        new : true,
-        runValidators : true
-    });
+    let user
+
+    if(req.body.favoriteVideos) {
+        const video = req.body.favoriteVideos;
+        const currentUser = await User.findById(req.user.id);
+        if(!currentUser) return next(new errorHandler("an error occurred while updating your data",400));
+
+        const isAlreadyInFavorites = currentUser.favoriteVideos.includes(video);
+        const updateOperation = isAlreadyInFavorites ? {$pull : {favoriteVideos : video}} : {$addToSet: { favoriteVideos: video } };
+
+        user = await User.findOneAndUpdate({_id: req.user.id} , updateOperation , {
+            new : true,
+            runValidators : true
+        });
+    }
+    else {
+        user = await User.findOneAndUpdate({_id: req.user.id} , req.body , {
+            new : true,
+            runValidators : true
+        });
+    
+    }
 
     if(!user) return next(new errorHandler("an error occurred while updating your data",400));
     
